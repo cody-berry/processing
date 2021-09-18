@@ -4,12 +4,14 @@ import processing.core.PApplet;
 
 import java.util.ArrayList;
 
-/**
- * version comments
- * 	particle class: pos, vel, acc,
- * 	show, update
- * 	apply_force
- * 	create 100 objects
+/*
+version comments
+. 	particle class: pos, vel, acc,
+ 	show, update
+ 	apply_force
+ 	attract following universal law of gravitation
+ 	create 100 objects
+ 	add attractor + planets
  */
 public class Main extends PApplet {
 	ArrayList<Planet> planets;
@@ -26,7 +28,7 @@ public class Main extends PApplet {
 	public void setup() {
 		rectMode(RADIUS);
 		colorMode(HSB, 360f, 100f, 100f, 100f);
-		planets = new ArrayList<Planet>();
+		planets = new ArrayList<>();
 		for (int i = 0; i < 100; i++){
 			planets.add(new Planet(this, (int) (Math.random()*width),
 					(int) (Math.random()*height),
@@ -39,8 +41,8 @@ public class Main extends PApplet {
 		background(210, 100, 30, 100);
 		for (Planet planet : planets){
 			planet.show(this);
+			planet.update(this);
 		}
-
 	}
 
 	@Override
