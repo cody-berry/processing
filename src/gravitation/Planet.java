@@ -27,4 +27,9 @@ public class Planet{
 		vel.add(acc);
 		acc.mult(0);
 	}
+
+	public void apply_force(PApplet app, PVector f){
+		// f = ma, so a = f/m
+		acc.add(f);
+	}
 }
