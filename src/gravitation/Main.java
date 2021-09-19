@@ -1,13 +1,13 @@
 package gravitation;
 
 import processing.core.PApplet;
-import processing.core.PVector;
+//import processing.core.PVector;
 
 import java.util.ArrayList;
 
 /*
 version comments
-. 	particle class: pos, vel, acc,
+. 	particle class: pos, vel, acc
 .	show, update
 .	apply_force
  	attract following universal law of gravitation
@@ -16,7 +16,7 @@ version comments
  */
 public class Main extends PApplet {
 	ArrayList<Planet> planets;
-	PVector gravity;
+	Planet attractor;
 	public static void main(String[] args) {
 		PApplet.main(new String[]{Main.class.getName()});
 	}
@@ -29,7 +29,6 @@ public class Main extends PApplet {
 	@Override
 	public void setup() {
 		rectMode(RADIUS);
-		gravity = new PVector(0, (float) 0.01);
 		colorMode(HSB, 360f, 100f, 100f, 100f);
 		planets = new ArrayList<>();
 		for (int i = 0; i < 100; i++){
@@ -37,15 +36,17 @@ public class Main extends PApplet {
 					(int) (Math.random()*height),
 					(int) (Math.random()*10 + 10)));
 		}
+		attractor = new Planet(this, width/2, height/2, 30);
 	}
 
 	@Override
 	public void draw() {
 		background(210, 100, 30, 100);
+		attractor.show(this);
 		for (Planet planet : planets){
 			planet.show(this);
 			planet.update(this);
-			planet.apply_force(this, PVector.mult(gravity, planet.mass));
+			planet.apply_force(this, attractor.attract(this, planet));
 		}
 	}
 
