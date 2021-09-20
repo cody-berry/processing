@@ -8,45 +8,69 @@ public class Planet{
 	PVector vel;
 	PVector acc;
 	float mass;
+	float maxForce;
 
 	public Planet(PApplet app, int x, int y, int mass) {
 		pos = new PVector(x, y);
 		vel = PVector.random2D().mult(app.random(2f, 5f));
 		acc = new PVector(0, 0);
 		this.mass = mass;
-
+		maxForce = 0.1f;
 	}
 
+	public void edges(PApplet app) {
+		// right
+		if (pos.x + mass > app.width) {
+			vel.x *= -1;
+		}
+		// left
+		if (pos.x - mass < 0) {
+			vel.x *= -1;
+		}
+		// bottom (y coordinates positive go down)
+		if(pos.y + mass > app.height) {
+			vel.y *= -1;
+		}
+		// top
+		if (pos.y - mass < 0) {
+			vel.y *= -1;
+		}
+	}
+
+	// shows ourselves
 	public void show(PApplet app) {
 		app.fill(0, 0, 100, 30); // white
 		app.circle(pos.x, pos.y, this.mass);
 	}
 
+	// updates our position, velocity, and acceleration
 	public void update(PApplet app) {
 		vel.add(acc);
 		pos.add(vel);
 		acc.mult(0);
 	}
 
+	// applies a force
 	public void apply_force(PApplet app, PVector f) {
 		// f = ma, so a = f/m
+		f.limit(maxForce);
 		acc.add(PVector.div(f, mass));
 	}
 
+	// returns the force of attracting another planet
 	public PVector attract(PApplet app, Planet target) {
 		// what is the vector pointing from us to the target?
 		PVector vector = PVector.sub(pos, target.pos);
 		// according to Newton's gravitational law:
 		// F = GM₁M₂/r². We don't have the distance!
 		float distance;
-		distance = PVector.dist(target.pos, pos);
+		distance = constrain(PVector.dist(target.pos, pos), 6, 16);
 		// and the gravitational constant.
 		int G;
 		G = 3;
 		// now we can use Newton's gravitational law.
 		float strength;
-		strength = constrain(G*(target.mass*mass)/(distance * distance), 8,
-				15);
+		strength = G*(target.mass*mass)/(distance * distance);
 		vector.setMag(strength);
 		return vector; // what if we're going to do something to the force?
 	}

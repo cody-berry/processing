@@ -10,13 +10,15 @@ version comments
 . 	particle class: pos, vel, acc
 .	show, update
 .	apply_force
- 	attract following universal law of gravitation
- 	create 100 objects
+.	attract following universal law of gravitation
  	add attractor + planets
+ 	convert to 3D
+ 	add peasycam
+ 	draw axes
+ 	add trails
  */
 public class Main extends PApplet {
 	ArrayList<Planet> planets;
-	Planet attractor;
 	public static void main(String[] args) {
 		PApplet.main(new String[]{Main.class.getName()});
 	}
@@ -36,22 +38,34 @@ public class Main extends PApplet {
 					(int) (Math.random()*height),
 					(int) (Math.random()*10 + 10)));
 		}
-		attractor = new Planet(this, width/2, height/2, 30);
 	}
 
 	@Override
 	public void draw() {
 		background(210, 100, 30, 100);
-		attractor.show(this);
 		for (Planet planet : planets){
+			for (Planet otherP : planets){
+				// We don't want to attract ourselves! That's not how
+				// gravitation works.
+				if (otherP != planet) {
+					// Let's now apply the force!
+					planet.apply_force(this, otherP.attract(this, planet));
+				}
+			}
+		}
+
+		// We need a separate loop for show and update, but I don't know why.
+		for (Planet planet : planets) {
 			planet.show(this);
 			planet.update(this);
-			planet.apply_force(this, attractor.attract(this, planet));
+//			// Olive the planets go to the edges!
+//			planet.edges(this);
 		}
 	}
 
 	@Override
 	public void mousePressed() {
-		System.out.println(mouseX);
+		planets.add(new Planet(this, mouseX, mouseY,
+				(int) (Math.random()*10 + 10)));
 	}
 }
