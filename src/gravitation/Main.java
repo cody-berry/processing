@@ -14,7 +14,7 @@ version comments
 .	attract following universal law of gravitation
 .	add attractor + planets
 .	convert to 3D, add peasycam
- 	draw axes
+* 	draw axes
  	add trails
  */
 public class Main extends PApplet {
@@ -27,7 +27,7 @@ public class Main extends PApplet {
 
 	@Override
 	public void settings() {
-		size(640, 360, P3D);
+		size(1280, 720, P3D);
 	}
 
 	@Override
@@ -36,12 +36,12 @@ public class Main extends PApplet {
 		colorMode(HSB, 360f, 100f, 100f, 100f);
 		planets = new ArrayList<>();
 		for (int i = 0; i < 100; i++){
-			planets.add(new Planet(this, (int) (Math.random()*width),
-					(int) (Math.random()*height),
-					(int) (Math.random()*-height),
+			planets.add(new Planet(this, (int) (Math.random()*width*2 - width),
+					(int) (Math.random()*height*2 - height),
+					(int) (Math.random()*-height*2+height),
 					(int) (Math.random()*10 + 10)));
 		}
-		cam = new PeasyCam(this, width/2, height/2, 0, height);
+		cam = new PeasyCam(this, 0, 0, 0, height);
 	}
 
 	@Override
@@ -63,12 +63,33 @@ public class Main extends PApplet {
 			planet.show(this);
 			planet.update(this);
 		}
+		drawAxes();
 	}
 
 	@Override
-	public void mousePressed() {
-		planets.add(new Planet(this, mouseX, mouseY,
-				(int) (Math.random()*height),
-				(int) (Math.random()*10 + 10)));
+	public void keyPressed() {
+		if (key == 'a') {
+			planets.add(new Planet(this, mouseX, mouseY,
+					(int) (Math.random() * height * 2 - height),
+					(int) (Math.random() * 10 + 10)));
+		}
+	}
+
+	// draws the axes
+	public void drawAxes() {
+		// TODO: Make it so that none of the spheres are darker than the others
+		stroke(355, 83, 100);
+		strokeWeight(1f);
+		line(7000, 0, 0, 0, 0, 0);
+		stroke(355, 83, 50);
+		line(0, 0, 0, -7000, 0, 0);
+		stroke(90, 83, 100);
+		line(0, 7000, 0, 0, 0, 0);
+		stroke(90, 83, 50);
+		line(0, 0, 0, 0, -7000, 0);
+		stroke(210, 83, 100);
+		line(0, 0, 7000, 0, 0, 0);
+		stroke(210, 83, 50);
+		line(0, 0, 0, 0, 0, -7000);
 	}
 }

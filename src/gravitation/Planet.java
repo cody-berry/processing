@@ -52,9 +52,9 @@ public class Planet{
 		vel.add(acc);
 		pos.add(vel);
 		acc.mult(0);
-		pos.x = constrain(pos.x, 0, app.width);
-		pos.y = constrain(pos.y, 0, app.height);
-		pos.z = constrain(pos.z, 0, app.height);
+		pos.x = constrain(pos.x, -app.width, app.width);
+		pos.y = constrain(pos.y, -app.height, app.height);
+		pos.z = constrain(pos.z, -app.height, app.height);
 	}
 
 	// applies a force
