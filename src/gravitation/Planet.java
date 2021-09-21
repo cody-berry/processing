@@ -10,10 +10,10 @@ public class Planet{
 	float mass;
 	float maxForce;
 
-	public Planet(PApplet app, int x, int y, int mass) {
-		pos = new PVector(x, y);
-		vel = PVector.random2D().mult(app.random(2f, 5f));
-		acc = new PVector(0, 0);
+	public Planet(PApplet app, int x, int y, int z, int mass) {
+		pos = new PVector(x, y, z);
+		vel = PVector.random3D().mult(app.random(2f, 5f));
+		acc = new PVector(0, 0, 0);
 		this.mass = mass;
 		maxForce = 0.1f;
 	}
@@ -39,8 +39,12 @@ public class Planet{
 
 	// shows ourselves
 	public void show(PApplet app) {
+		app.noStroke();
 		app.fill(0, 0, 100, 30); // white
-		app.circle(pos.x, pos.y, this.mass);
+		app.pushMatrix();
+		app.translate(pos.x, pos.y, pos.z);
+		app.sphere(this.mass);
+		app.popMatrix();
 	}
 
 	// updates our position, velocity, and acceleration
@@ -48,6 +52,9 @@ public class Planet{
 		vel.add(acc);
 		pos.add(vel);
 		acc.mult(0);
+		pos.x = constrain(pos.x, 0, app.width);
+		pos.y = constrain(pos.y, 0, app.height);
+		pos.z = constrain(pos.z, 0, app.height);
 	}
 
 	// applies a force

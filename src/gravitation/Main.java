@@ -1,5 +1,6 @@
 package gravitation;
 
+import peasy.PeasyCam;
 import processing.core.PApplet;
 //import processing.core.PVector;
 
@@ -11,21 +12,22 @@ version comments
 .	show, update
 .	apply_force
 .	attract following universal law of gravitation
- 	add attractor + planets
- 	convert to 3D
- 	add peasycam
+.	add attractor + planets
+.	convert to 3D, add peasycam
  	draw axes
  	add trails
  */
 public class Main extends PApplet {
 	ArrayList<Planet> planets;
+	PeasyCam cam;
+
 	public static void main(String[] args) {
 		PApplet.main(new String[]{Main.class.getName()});
 	}
 
 	@Override
 	public void settings() {
-		size(640, 360);
+		size(640, 360, P3D);
 	}
 
 	@Override
@@ -36,8 +38,10 @@ public class Main extends PApplet {
 		for (int i = 0; i < 100; i++){
 			planets.add(new Planet(this, (int) (Math.random()*width),
 					(int) (Math.random()*height),
+					(int) (Math.random()*-height),
 					(int) (Math.random()*10 + 10)));
 		}
+		cam = new PeasyCam(this, width/2, height/2, 0, height);
 	}
 
 	@Override
@@ -58,14 +62,13 @@ public class Main extends PApplet {
 		for (Planet planet : planets) {
 			planet.show(this);
 			planet.update(this);
-//			// Olive the planets go to the edges!
-//			planet.edges(this);
 		}
 	}
 
 	@Override
 	public void mousePressed() {
 		planets.add(new Planet(this, mouseX, mouseY,
+				(int) (Math.random()*height),
 				(int) (Math.random()*10 + 10)));
 	}
 }
