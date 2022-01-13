@@ -2,6 +2,7 @@ package gravitation;
 
 import peasy.PeasyCam;
 import processing.core.PApplet;
+import processing.core.PConstants;
 //import processing.core.PVector;
 
 import java.util.ArrayList;
@@ -16,6 +17,8 @@ version comments
 .	convert to 3D, add peasycam
 * 	draw axes
  	add trails
+
+ 	https://processing.org/tutorials/p3d#lighting
  */
 public class Main extends PApplet {
 	ArrayList<Planet> planets;
@@ -35,13 +38,9 @@ public class Main extends PApplet {
 		rectMode(RADIUS);
 		colorMode(HSB, 360f, 100f, 100f, 100f);
 		planets = new ArrayList<>();
-		for (int i = 0; i < 100; i++){
-			planets.add(new Planet(this, (int) (Math.random()*width*2 - width),
-					(int) (Math.random()*height*2 - height),
-					(int) (Math.random()*-height*2+height),
-					(int) (Math.random()*10 + 10)));
-		}
 		cam = new PeasyCam(this, 0, 0, 0, height);
+		sphereDetail(10);
+		lights();
 	}
 
 	@Override

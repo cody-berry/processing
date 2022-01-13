@@ -3,19 +3,24 @@ package gravitation;
 import processing.core.PApplet;
 import processing.core.PVector;
 
+import java.util.ArrayList;
+
 public class Planet{
 	PVector pos;
 	PVector vel;
 	PVector acc;
 	float mass;
 	float maxForce;
+	ArrayList<PVector> trails;
 
 	public Planet(PApplet app, int x, int y, int z, int mass) {
 		pos = new PVector(x, y, z);
-		vel = PVector.random3D().mult(app.random(2f, 5f));
+		vel = PVector.random3D().mult(app.random(1f, 3f));
 		acc = new PVector(0, 0, 0);
 		this.mass = mass;
-		maxForce = 0.1f;
+		maxForce = .2f;
+		trails = new ArrayList<PVector>();
+
 	}
 
 	public void edges(PApplet app) {
@@ -39,8 +44,16 @@ public class Planet{
 
 	// shows ourselves
 	public void show(PApplet app) {
+		for (PVector trail : trails) {
+			app.noStroke();
+			app.fill(0, 0, 30); // dark grey
+			app.pushMatrix();
+			app.translate(trail.x, trail.y, trail.z);
+			app.sphere(this.mass);
+			app.popMatrix();
+		}
 		app.noStroke();
-		app.fill(0, 0, 100, 30); // white
+		app.fill(0, 0, 100); // white
 		app.pushMatrix();
 		app.translate(pos.x, pos.y, pos.z);
 		app.sphere(this.mass);
@@ -52,9 +65,11 @@ public class Planet{
 		vel.add(acc);
 		pos.add(vel);
 		acc.mult(0);
-		pos.x = constrain(pos.x, -app.width, app.width);
-		pos.y = constrain(pos.y, -app.height, app.height);
-		pos.z = constrain(pos.z, -app.height, app.height);
+		trails.add(new PVector(pos.x, pos.y, pos.z));
+		// What happens if we have too much trail objects?
+		if (trails.size() > 90) {
+			trails.remove(0);
+		}
 	}
 
 	// applies a force
