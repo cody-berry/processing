@@ -54,11 +54,23 @@ public class DotProduct extends PApplet {
 		line(pos.x, pos.y, pos.x + b.x, pos.y + b.y);
 
 
+		// add a green circle at our position and the end of a
+		fill(120, 100, 100);
+		stroke(120, 100, 100);
+		strokeWeight(10);
+		circle(pos.x, pos.y, 8);
+		circle(pos.x + a.x, pos.y + a.y, 8);
+
+
 		// add scalar projection
 		PVector v = vectorProjection(a, b);
 		stroke(210, 100, 100);
 		strokeWeight(8);
 		line(pos.x, pos.y, pos.x + v.x, pos.y + v.y);
+		// add red circle at the end of the scalar projection
+		stroke(0, 100, 100);
+		fill(0, 100, 100);
+		circle(pos.x + v.x, pos.y + v.y, 8);
 
 		// add dashed line
 //		drawDashedLine(, (int) (pos.x + v.x),
