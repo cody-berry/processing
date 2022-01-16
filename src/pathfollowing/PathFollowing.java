@@ -31,6 +31,8 @@ public class PathFollowing extends PApplet {
 		background(210, 100, 30, 100);
 		v.show();
 		v.update();
+		// let's follow our path!
+		v.follow(p);
 		p.show();
 	}
 
