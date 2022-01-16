@@ -1,13 +1,13 @@
 package pathfollowing;
 
 import processing.core.PApplet;
-import processing.core.PVector;
 
 /**
  * Thanks to our hero Abe Pazos at https://vimeo.com/channels/p5idea, who teaches us how to use Processing inside IDEA
  */
 public class PathFollowing extends PApplet {
 	Vehicle v;
+	Path p;
 	public static void main(String[] args) {
 		PApplet.main(new String[]{PathFollowing.class.getName()});
 	}
@@ -23,23 +23,19 @@ public class PathFollowing extends PApplet {
 		colorMode(HSB, 360f, 100f, 100f, 100f);
 		v = new Vehicle(this, (float) (Math.random()*width),
 				(float) (Math.random()*height));
+		p = new Path(this, 0, height/2, width, height/2);
 	}
 
 	@Override
 	public void draw() {
 		background(210, 100, 30, 100);
-		// fill with a red color for our target
-		fill(0, 100, 100);
-		noStroke();
-		PVector target = new PVector(mouseX, mouseY);
-		circle(target.x, target.y, 32);
 		v.show();
 		v.update();
-		v.seek(target);
+		p.show();
 	}
 
 	@Override
 	public void mousePressed() {
-		System.out.println(mouseX);
+//		System.out.println(mouseX);
 	}
 }
