@@ -34,6 +34,8 @@ public class PathFollowing extends PApplet {
 		// let's follow our path!
 		v.follow(p);
 		p.show();
+		// oh, and edges
+		v.edges();
 	}
 
 	@Override

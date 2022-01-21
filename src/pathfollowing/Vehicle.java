@@ -78,6 +78,27 @@ public class Vehicle {
 		}
 	}
 
+	// wraps around the edges, as if the canvas were a donut
+	public void edges() {
+		// left
+		if (pos.x - r < 0) {
+			pos.x = app.width - this.r;
+		}
+		// right
+		if (pos.x + r > app.width) {
+			pos.x = r;
+		}
+
+		// bottom
+		if (pos.y + r > app.height) {
+			pos.y = r;
+		}
+		// top
+		if (pos.y - r < 0) {
+			pos.y = app.height - r;
+		}
+	}
+
 	public void show() {
 		app.fill(0, 0, 100);
 		app.noStroke();
